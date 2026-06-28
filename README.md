@@ -51,21 +51,26 @@ Token Bucket is a rate limiting algorithm where:
 ---
 
 ## 📁 Project Structure
+
+```
 src/main/java/RateLimiter/Bucket/
-
+│
 ├── config/
-│   └── WebConfig.java          # Registers interceptor
+│   └── WebConfig.java
+│
 ├── controller/
-│   └── ApiController.java      # REST endpoints
+│   └── ApiController.java
+│
 ├── filter/
-│   └── RateLimitInterceptor.java  # Intercepts every request
+│   └── RateLimitInterceptor.java
+│
 ├── model/
-│   ├── User.java               # User model
-│   └── UserTier.java           # FREE / PREMIUM enum
-├── service/
-│   └── TokenBucketService.java # Core rate limiting logic
-
----
+│   ├── User.java
+│   └── UserTier.java
+│
+└── service/
+    └── TokenBucketService.java
+```
 
 ## ⚙️ Configuration
 
