@@ -93,37 +93,17 @@ rate.limit.premium.refill.interval.seconds=2700
 
 ## 🔄 Data Flow
 
-Client Request
-
-↓
-
-RateLimitInterceptor
-
-↓
-
-Extract X-Client-ID + X-User-Tier from headers
-
-↓
-
-TokenBucketService.allowRequest()
-
-↓
-
-Redis → GET token_bucket:{clientId}
-
-↓
-
-Refill logic → tokens add karo (if interval passed)
-
-↓
-
-Tokens > 0?
-
-✅ YES → decrement token → save in Redis → 200 OK
-
-❌ NO  → 429 Too Many Requests
-
----
+| Step | Component | Action |
+|------|-----------|--------|
+| 1 | Client | Sends GET /api/hello with X-Client-ID + X-User-Tier headers |
+| 2 | RateLimitInterceptor | Intercepts request before controller |
+| 3 | RateLimitInterceptor | Extracts clientId and tier from headers |
+| 4 | TokenBucketService | allowRequest(clientId, tier) called |
+| 5 | Redis | GET token_bucket:{clientId} |
+| 6 | TokenBucketService | Refill logic — add tokens if interval passed |
+| 7 | TokenBucketService | Tokens > 0? |
+| 8 ✅ | ApiController | Token available → decrement → 200 OK |
+| 8 ❌ | Interceptor | No token → 429 Too Many Requests |
 
 ## 🗃️ Redis Keys
 
